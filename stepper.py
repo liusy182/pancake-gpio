@@ -12,16 +12,22 @@ stepper_motor_out = {
 
 Direction = 1
 Steps = 0
+steps_left = 4095
+
+def reset():
+  Direction = 1
+  Steps = 0
+  steps_left = 4095
 
 def set_direction():
-  if Direction==1:
+  if Direction == 1:
     Steps += 1
-  if Direction==0:
+  if Direction == 0:
     Steps -= 1
-  if Steps>7:
-    Steps=0
-  if Steps<0: 
-    Steps=7
+  if Steps > 7:
+    Steps = 0
+  if Steps < 0: 
+    Steps = 7
 
 def step():
   if Steps == 0:
@@ -71,7 +77,6 @@ def step():
     GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
   set_direction()
 
-steps_left=4095
 def loop():
    while steps_left > 0:
       step()

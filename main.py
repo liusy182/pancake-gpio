@@ -9,6 +9,7 @@ def setup():
 
 def run_loop():
     while True:
+      stepper.reset()
       stepper.loop()
 
 
