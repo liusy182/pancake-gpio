@@ -75,7 +75,7 @@ steps_left=4095
 def loop():
    while steps_left > 0:
       step()
-      time.sleep(.1)
+      time.sleep(0.1)
       steps_left -= 1
     }
   }
