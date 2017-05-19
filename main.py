@@ -24,7 +24,8 @@ def setup():
 
 def run_loop():
     while True:
-      for key, val in stepper_motor_in:
+      for key in stepper_motor_in:
+        val = stepper_motor_in[key]
         if GPIO.input(key):
           GPIO.output(stepper_motor_out[val], GPIO.HIGH)
         else:
