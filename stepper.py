@@ -1,7 +1,7 @@
 import time
 import RPi.GPIO as GPIO
 
-stepper_motor_out = {
+out = {
   'ENA': 11,
   'IN1': 13,
   'IN2': 15,
@@ -31,55 +31,55 @@ def set_direction():
 
 def step():
   if Steps == 0:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.HIGH)
+    GPIO.output(out['IN1'], GPIO.LOW) 
+    GPIO.output(out['IN2'], GPIO.LOW)
+    GPIO.output(out['IN3'], GPIO.LOW)
+    GPIO.output(out['IN4'], GPIO.HIGH)
   elif Steps == 1:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.HIGH)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.HIGH)
+    GPIO.output(out['IN1'], GPIO.LOW) 
+    GPIO.output(out['IN2'], GPIO.LOW)
+    GPIO.output(out['IN3'], GPIO.HIGH)
+    GPIO.output(out['IN4'], GPIO.HIGH)
   elif Steps == 2:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.HIGH)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
+    GPIO.output(out['IN1'], GPIO.LOW) 
+    GPIO.output(out['IN2'], GPIO.LOW)
+    GPIO.output(out['IN3'], GPIO.HIGH)
+    GPIO.output(out['IN4'], GPIO.LOW)
   elif Steps == 3:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.HIGH)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.HIGH)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
+    GPIO.output(out['IN1'], GPIO.LOW) 
+    GPIO.output(out['IN2'], GPIO.HIGH)
+    GPIO.output(out['IN3'], GPIO.HIGH)
+    GPIO.output(out['IN4'], GPIO.LOW)
   elif Steps == 4:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.HIGH)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
+    GPIO.output(out['IN1'], GPIO.LOW) 
+    GPIO.output(out['IN2'], GPIO.HIGH)
+    GPIO.output(out['IN3'], GPIO.LOW)
+    GPIO.output(out['IN4'], GPIO.LOW)
   elif Steps == 5:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.HIGH) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.HIGH)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
+    GPIO.output(out['IN1'], GPIO.HIGH) 
+    GPIO.output(out['IN2'], GPIO.HIGH)
+    GPIO.output(out['IN3'], GPIO.LOW)
+    GPIO.output(out['IN4'], GPIO.LOW)
   elif Steps == 6:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.HIGH) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
+    GPIO.output(out['IN1'], GPIO.HIGH) 
+    GPIO.output(out['IN2'], GPIO.LOW)
+    GPIO.output(out['IN3'], GPIO.LOW)
+    GPIO.output(out['IN4'], GPIO.LOW)
   elif Steps == 7:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.HIGH) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.HIGH)
+    GPIO.output(out['IN1'], GPIO.HIGH) 
+    GPIO.output(out['IN2'], GPIO.LOW)
+    GPIO.output(out['IN3'], GPIO.LOW)
+    GPIO.output(out['IN4'], GPIO.HIGH)
   else:
-    GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
-    GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
-    GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
+    GPIO.output(out['IN1'], GPIO.LOW) 
+    GPIO.output(out['IN2'], GPIO.LOW)
+    GPIO.output(out['IN3'], GPIO.LOW)
+    GPIO.output(out['IN4'], GPIO.LOW)
   set_direction()
 
 def loop():
-   while steps_left > 0:
-      step()
-      time.sleep(0.1)
-      steps_left -= 1
+  while steps_left > 0:
+    step()
+    time.sleep(0.1)
+    steps_left -= 1
 
