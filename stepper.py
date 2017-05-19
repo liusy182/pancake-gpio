@@ -82,6 +82,4 @@ def loop():
       step()
       time.sleep(0.1)
       steps_left -= 1
-    }
-  }
 
