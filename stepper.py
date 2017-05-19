@@ -34,32 +34,32 @@ def step():
     GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
     GPIO.output(stepper_motor_out['IN3'], GPIO.HIGH)
     GPIO.output(stepper_motor_out['IN4'], GPIO.HIGH)
-  elif Steps == 1:
+  elif Steps == 2:
     GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
     GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
     GPIO.output(stepper_motor_out['IN3'], GPIO.HIGH)
     GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
-  elif Steps == 1:
+  elif Steps == 3:
     GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
     GPIO.output(stepper_motor_out['IN2'], GPIO.HIGH)
     GPIO.output(stepper_motor_out['IN3'], GPIO.HIGH)
     GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
-  elif Steps == 1:
+  elif Steps == 4:
     GPIO.output(stepper_motor_out['IN1'], GPIO.LOW) 
     GPIO.output(stepper_motor_out['IN2'], GPIO.HIGH)
     GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
     GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
-  elif Steps == 1:
+  elif Steps == 5:
     GPIO.output(stepper_motor_out['IN1'], GPIO.HIGH) 
     GPIO.output(stepper_motor_out['IN2'], GPIO.HIGH)
     GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
     GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
-  elif Steps == 1:
+  elif Steps == 6:
     GPIO.output(stepper_motor_out['IN1'], GPIO.HIGH) 
     GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
     GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
     GPIO.output(stepper_motor_out['IN4'], GPIO.LOW)
-  elif Steps == 1:
+  elif Steps == 7:
     GPIO.output(stepper_motor_out['IN1'], GPIO.HIGH) 
     GPIO.output(stepper_motor_out['IN2'], GPIO.LOW)
     GPIO.output(stepper_motor_out['IN3'], GPIO.LOW)
