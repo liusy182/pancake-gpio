@@ -78,6 +78,7 @@ def step():
   set_direction()
 
 def loop():
+  print(steps_left)
   while steps_left > 0:
     step()
     time.sleep(0.1)
