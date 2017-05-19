@@ -4,8 +4,8 @@ import stepper
 
 def setup():
   GPIO.setmode(GPIO.BOARD)
-  GPIO.setup(stepper_motor_in.keys(), GPIO.IN)
-  # GPIO.setup(stepper_motor_out.values(), GPIO.OUT, initial=GPIO.HIGH)
+  # GPIO.setup(stepper.stepper_motor_in.keys(), GPIO.IN)
+  GPIO.setup(stepper.stepper_motor_out.values(), GPIO.OUT, initial=GPIO.HIGH)
 
 def run_loop():
     while True:
