@@ -22,7 +22,7 @@ PINS_Y = {
     'ENB': 26
 }
 
-class StepperMotor:
+class StepperMotor(object):
 
     # min delay between 2 consecutive steps
     min_interval = 0.005
@@ -115,7 +115,7 @@ class StepperMotor:
             GPIO.output(out['IN3'], GPIO.LOW)
             GPIO.output(out['IN4'], GPIO.LOW)
 
-class StepperMotorController:
+class StepperMotorController(object):
     def __init(self):
         GPIO.setup(PINS_X.values(), GPIO.OUT, initial=GPIO.HIGH)
         self.motor_x = StepperMotor(pins=PINS_X, steps=1000)
