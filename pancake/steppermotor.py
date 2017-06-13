@@ -124,7 +124,7 @@ class StepperMotorController(object):
         self.motor_y = StepperMotor(pins=PINS_Y, steps = 2000)
 
     def move(self, x, y):
-        duration = min(self.motor_x.get_duration(x), self.motor_y.get_duration(y))
+        duration = max(self.motor_x.get_duration(x), self.motor_y.get_duration(y))
         self.motor_x.move(x, duration)
         self.motor_y.move(y, duration)
         #need to buffer a longer delay
