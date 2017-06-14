@@ -1,95 +1,58 @@
-import time
 import RPi.GPIO as GPIO
+import time
 
-out = {
-  'ENA': 11,
-  'IN1': 13,
-  'IN2': 15,
-  'IN3': 12,
-  'IN4': 16,
-  'ENB': 18
-}
+enable_pin_A = 11
+enable_pin_B = 18
+coil_A_1_pin = 13
+coil_A_2_pin = 15
+coil_A_3_pin = 12
+coil_A_4_pin = 16
 
-Direction = 0
-Steps = 0
-steps_left = 4095
+GPIO.setup(coil_A_1_pin, GPIO.OUT)
+GPIO.setup(coil_A_2_pin, GPIO.OUT)
+GPIO.setup(coil_A_3_pin, GPIO.OUT)
+GPIO.setup(coil_A_4_pin, GPIO.OUT)
 
-def reset():
-  global Direction
-  global Steps
-  global steps_left
-  Direction = 0
-  Steps = 0
-  steps_left = 4095
 
-def set_direction():
-  global Steps
-  global Direction
-  if Direction == 1:
-    Steps += 1
-  if Direction == 0:
-    Steps -= 1
-  if Steps > 7:
-    Steps = 0
-  if Steps < 0: 
-    Steps = 7
+def clockwise(delay, steps):
+    """
 
-def step():
-  global Steps
-  print(Steps)
-  if Steps == 0:
-    GPIO.output(out['IN1'], GPIO.HIGH) 
-    GPIO.output(out['IN2'], GPIO.HIGH)
-    GPIO.output(out['IN3'], GPIO.LOW)
-    GPIO.output(out['IN4'], GPIO.LOW)
-  elif Steps == 1:
-    GPIO.output(out['IN1'], GPIO.LOW) 
-    GPIO.output(out['IN2'], GPIO.HIGH)
-    GPIO.output(out['IN3'], GPIO.HIGH)
-    GPIO.output(out['IN4'], GPIO.LOW)
-  elif Steps == 2:
-    GPIO.output(out['IN1'], GPIO.LOW) 
-    GPIO.output(out['IN2'], GPIO.LOW)
-    GPIO.output(out['IN3'], GPIO.HIGH)
-    GPIO.output(out['IN4'], GPIO.HIGH)
-  elif Steps == 3:
-    GPIO.output(out['IN1'], GPIO.HIGH) 
-    GPIO.output(out['IN2'], GPIO.LOW)
-    GPIO.output(out['IN3'], GPIO.LOW)
-    GPIO.output(out['IN4'], GPIO.HIGH)
-  elif Steps == 4:
-    GPIO.output(out['IN1'], GPIO.HIGH) 
-    GPIO.output(out['IN2'], GPIO.HIGH)
-    GPIO.output(out['IN3'], GPIO.LOW)
-    GPIO.output(out['IN4'], GPIO.LOW)
-  elif Steps == 5:
-    GPIO.output(out['IN1'], GPIO.LOW) 
-    GPIO.output(out['IN2'], GPIO.HIGH)
-    GPIO.output(out['IN3'], GPIO.HIGH)
-    GPIO.output(out['IN4'], GPIO.LOW)
-  elif Steps == 6:
-    GPIO.output(out['IN1'], GPIO.LOW) 
-    GPIO.output(out['IN2'], GPIO.LOW)
-    GPIO.output(out['IN3'], GPIO.HIGH)
-    GPIO.output(out['IN4'], GPIO.HIGH)
-  elif Steps == 7:
-    GPIO.output(out['IN1'], GPIO.HIGH) 
-    GPIO.output(out['IN2'], GPIO.LOW)
-    GPIO.output(out['IN3'], GPIO.LOW)
-    GPIO.output(out['IN4'], GPIO.HIGH)
-  else:
-    GPIO.output(out['IN1'], GPIO.LOW) 
-    GPIO.output(out['IN2'], GPIO.LOW)
-    GPIO.output(out['IN3'], GPIO.LOW)
-    GPIO.output(out['IN4'], GPIO.LOW)
-  set_direction()
+    :param delay: the delay in each step
+    :param steps: how many steps should this iteration run
+    :return: nothing
+    """
+    for i in range(0, steps):
+        set_step(1, 0, 1, 0)
+        time.sleep(delay)
+        set_step(0, 1, 1, 0)
+        time.sleep(delay)
+        set_step(0, 1, 0, 1)
+        time.sleep(delay)
+        set_step(1, 0, 0, 1)
+        time.sleep(delay)
 
-def loop():
-  global steps_left
-  print(steps_left)
-  while steps_left > 0:
-    print(steps_left)
-    step()
-    time.sleep(0.005)
-    steps_left -= 1
+
+def anticlockwise(delay, steps):
+    """
+
+    :param delay: the delay in each step
+    :param steps: how many steps should this iteration run
+    :return: nothing
+    """
+    for i in range(0, steps):
+        set_step(1, 0, 0, 1)
+        time.sleep(delay)
+        set_step(0, 1, 0, 1)
+        time.sleep(delay)
+        set_step(0, 1, 1, 0)
+        time.sleep(delay)
+        set_step(1, 0, 1, 0)
+        time.sleep(delay)
+
+
+def set_step(w1, w2, w3, w4):
+    GPIO.output(coil_A_1_pin, w1)
+    GPIO.output(coil_A_2_pin, w2)
+    GPIO.output(coil_A_3_pin, w3)
+    GPIO.output(coil_A_4_pin, w4)
 
