@@ -8,11 +8,6 @@ coil_A_2_pin = 15
 coil_A_3_pin = 12
 coil_A_4_pin = 16
 
-GPIO.setup(coil_A_1_pin, GPIO.OUT)
-GPIO.setup(coil_A_2_pin, GPIO.OUT)
-GPIO.setup(coil_A_3_pin, GPIO.OUT)
-GPIO.setup(coil_A_4_pin, GPIO.OUT)
-
 
 def clockwise(delay, steps):
     """
