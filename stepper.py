@@ -1,12 +1,14 @@
 import RPi.GPIO as GPIO
 import time
 
-enable_pin_A = 11
-enable_pin_B = 18
-coil_A_1_pin = 13
-coil_A_2_pin = 15
-coil_A_3_pin = 12
-coil_A_4_pin = 16
+out = {
+    'ENA': 11,
+    'IN1': 13,
+    'IN2': 15,
+    'IN3': 12,
+    'IN4': 16,
+    'ENB': 18
+}
 
 
 def clockwise(delay, steps):
@@ -46,8 +48,7 @@ def anticlockwise(delay, steps):
 
 
 def set_step(w1, w2, w3, w4):
-    GPIO.output(coil_A_1_pin, w1)
-    GPIO.output(coil_A_2_pin, w2)
-    GPIO.output(coil_A_3_pin, w3)
-    GPIO.output(coil_A_4_pin, w4)
-
+    GPIO.output(out["IN1"], w1)
+    GPIO.output(out["IN2"], w2)
+    GPIO.output(out["IN3"], w3)
+    GPIO.output(out["IN4"], w4)
