@@ -37,7 +37,7 @@ def setup():
     GPIO.setup(PINS_Y.values(), GPIO.OUT, initial=GPIO.HIGH)
 
 
-def parse(filename) -> []:
+def parse(filename):
     """
     function to parse gcode file and converts it to a list of commands
     Possible Commands 
@@ -103,10 +103,12 @@ def move_line(newx, newy):
         for i in range(0, dx):
             # Todo: conversion between int to steps
             motorX.move_one_cycle(dirX)
+            print("Move motor X in dirx direction ", dirX)
             over += dy
             if over >= dx:
                 over -= dx
                 motorY.move_one_cycle(dirY)
+                print("Move motor Y in diry direction ", dirY)
             time.sleep(0.005)  # pause for delay
     else:
         over = dy / 2

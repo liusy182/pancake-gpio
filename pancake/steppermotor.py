@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 import time
-from threading import Thread, Event
+# from threading import Thread, Event
 
 import RPi.GPIO as GPIO
 
@@ -15,11 +15,11 @@ class StepperMotor(object):
         self.delay = 0.005
         self.pos = 0
 
-        self.e = Event()
-        self.e.clear()
-        self.t = Thread(target=self._beat)
-        self.t.daemon = True
-        self.t.start()
+        # self.e = Event()
+        # self.e.clear()
+        # self.t = Thread(target=self._beat)
+        # self.t.daemon = True
+        # self.t.start()
 
     def move_one_cycle(self, dir=1):
         if dir == 1:
