@@ -1,5 +1,6 @@
-import RPi.GPIO as GPIO
 import time
+
+import RPi.GPIO as GPIO
 
 out = {
     'ENA': 11,
@@ -10,6 +11,10 @@ out = {
     'ENB': 18
 }
 
+GPIO.setmode(GPIO.BOARD)
+GPIO.setwarnings(False)
+GPIO.setup(out.values(), GPIO.OUT, initial=GPIO.HIGH)
+
 
 def clockwise(delay, steps):
     """
@@ -19,11 +24,19 @@ def clockwise(delay, steps):
     :return: nothing
     """
     for i in range(0, steps):
-        set_step(1, 0, 1, 0)
+        set_step(0, 0, 0, 1)
+        time.sleep(delay)
+        set_step(0, 0, 1, 1)
+        time.sleep(delay)
+        set_step(0, 0, 1, 0)
         time.sleep(delay)
         set_step(0, 1, 1, 0)
         time.sleep(delay)
-        set_step(0, 1, 0, 1)
+        set_step(0, 1, 0, 0)
+        time.sleep(delay)
+        set_step(1, 1, 0, 0)
+        time.sleep(delay)
+        set_step(1, 0, 0, 0)
         time.sleep(delay)
         set_step(1, 0, 0, 1)
         time.sleep(delay)
@@ -39,11 +52,19 @@ def anticlockwise(delay, steps):
     for i in range(0, steps):
         set_step(1, 0, 0, 1)
         time.sleep(delay)
-        set_step(0, 1, 0, 1)
+        set_step(1, 0, 0, 0)
+        time.sleep(delay)
+        set_step(1, 1, 0, 0)
+        time.sleep(delay)
+        set_step(0, 1, 0, 0)
         time.sleep(delay)
         set_step(0, 1, 1, 0)
         time.sleep(delay)
-        set_step(1, 0, 1, 0)
+        set_step(0, 0, 1, 0)
+        time.sleep(delay)
+        set_step(0, 0, 1, 1)
+        time.sleep(delay)
+        set_step(0, 0, 0, 1)
         time.sleep(delay)
 
 
@@ -52,3 +73,11 @@ def set_step(w1, w2, w3, w4):
     GPIO.output(out["IN2"], w2)
     GPIO.output(out["IN3"], w3)
     GPIO.output(out["IN4"], w4)
+
+
+if __name__ == "__main__":
+    print("anti")
+    anticlockwise(0.001, 800)
+    # print("Clock wise now")
+    clockwise(0.001, 800)
+    GPIO.cleanup()

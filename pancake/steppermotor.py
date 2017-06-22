@@ -1,31 +1,23 @@
 from __future__ import absolute_import
 
 import time
-# from threading import Thread, Event
 
+# from threading import Thread, Event
 import RPi.GPIO as GPIO
 
 
 class StepperMotor(object):
-    # min delay between 2 consecutive steps
-    # min_interval = 0.005
 
     def __init__(self, pins):
         self.pins = pins
-        self.delay = 0.005
+        self.delay = 0.001
         self.pos = 0
-
-        # self.e = Event()
-        # self.e.clear()
-        # self.t = Thread(target=self._beat)
-        # self.t.daemon = True
-        # self.t.start()
 
     def move_one_cycle(self, dir=1):
         if dir == 1:
-            self.forward(self.delay, 16)
+            self.forward(self.delay, 8)
         else:
-            self.backward(self.delay, 16)
+            self.backward(self.delay, 8)
 
     def forward(self, delay, steps):
         """
@@ -34,11 +26,19 @@ class StepperMotor(object):
         :return: nothing
         """
         for i in range(0, steps):
-            self.set_step(1, 0, 1, 0)
+            self.set_step(0, 0, 0, 1)
+            time.sleep(delay)
+            self.set_step(0, 0, 1, 1)
+            time.sleep(delay)
+            self.set_step(0, 0, 1, 0)
             time.sleep(delay)
             self.set_step(0, 1, 1, 0)
             time.sleep(delay)
-            self.set_step(0, 1, 0, 1)
+            self.set_step(0, 1, 0, 0)
+            time.sleep(delay)
+            self.set_step(1, 1, 0, 0)
+            time.sleep(delay)
+            self.set_step(1, 0, 0, 0)
             time.sleep(delay)
             self.set_step(1, 0, 0, 1)
             time.sleep(delay)
@@ -52,11 +52,19 @@ class StepperMotor(object):
         for i in range(0, steps):
             self.set_step(1, 0, 0, 1)
             time.sleep(delay)
-            self.set_step(0, 1, 0, 1)
+            self.set_step(1, 0, 0, 0)
+            time.sleep(delay)
+            self.set_step(1, 1, 0, 0)
+            time.sleep(delay)
+            self.set_step(0, 1, 0, 0)
             time.sleep(delay)
             self.set_step(0, 1, 1, 0)
             time.sleep(delay)
-            self.set_step(1, 0, 1, 0)
+            self.set_step(0, 0, 1, 0)
+            time.sleep(delay)
+            self.set_step(0, 0, 1, 1)
+            time.sleep(delay)
+            self.set_step(0, 0, 0, 1)
             time.sleep(delay)
 
     def set_step(self, w1, w2, w3, w4):

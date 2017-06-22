@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 import re
-import steppermotor
 
 class Ops(object):
     MOVE = 1

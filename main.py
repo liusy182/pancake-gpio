@@ -33,6 +33,7 @@ def setup():
     :return: 
     """
     GPIO.setmode(GPIO.BOARD)
+    GPIO.setwarnings(False)
     GPIO.setup(PINS_X.values(), GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(PINS_Y.values(), GPIO.OUT, initial=GPIO.HIGH)
 
@@ -59,12 +60,13 @@ def parse(filename):
 def print_cake(cmds):
     for cmd in cmds:
         if cmd.startswith('G00'):
+            print("G00 ")
             m = re.search('G00\sX(\S+)\sY(\S+)', cmd)
             if not m:
-                return
+                continue
             x = m.group(1)
             y = m.group(2)
-            move_line(x, y)
+            move_line(int(float(x)), int(float(y)))
         elif cmd.startswith('G28'):
             # Resets X, Y
             move_line(0, 0)
@@ -72,7 +74,7 @@ def print_cake(cmds):
             # Pause for certain milli secs
             m = re.search('G00\sP(\S+)', cmd)
             if not m:
-                return
+                continue
             time.sleep(m.group(1) / 1000)
         elif cmd.startswith('M84'):
             # Motors Off
@@ -103,12 +105,10 @@ def move_line(newx, newy):
         for i in range(0, dx):
             # Todo: conversion between int to steps
             motorX.move_one_cycle(dirX)
-            print("Move motor X in dirx direction ", dirX)
             over += dy
             if over >= dx:
                 over -= dx
                 motorY.move_one_cycle(dirY)
-                print("Move motor Y in diry direction ", dirY)
             time.sleep(0.005)  # pause for delay
     else:
         over = dy / 2
@@ -128,3 +128,4 @@ if __name__ == "__main__":
     file = "sample.gcode"  # Change to get from Autodesk Cloud Storage later
     instructions = parse(file)
     print_cake(instructions)
+    GPIO.cleanup()
