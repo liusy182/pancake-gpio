@@ -102,7 +102,6 @@ def move_line(newx, newy):
             if over >= dx:
                 over -= dx
                 motorY.move_one_cycle(dirY)
-            time.sleep(0.005)  # pause for delay
     else:
         print("Motor Y Moving ", dirY)
         over = dy / 2
@@ -112,7 +111,6 @@ def move_line(newx, newy):
             if over >= dy:
                 over -= dy
                 motorY.move_one_cycle(dirY)
-            time.sleep(0.005)  # pause for delay
     motorX.pos = newx
     motorY.pos = newy
 
