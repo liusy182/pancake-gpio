@@ -14,9 +14,9 @@ class StepperMotor(object):
 
     def move_one_cycle(self, dir=1):
         if dir == 1:
-            self.forward(self.delay, 40)
+            self.forward(self.delay, 20)
         else:
-            self.backward(self.delay, 40)
+            self.backward(self.delay, 20)
 
     def forward(self, delay, steps):
         """
