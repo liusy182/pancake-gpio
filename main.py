@@ -94,6 +94,7 @@ def move_line(newx, newy):
     dx = abs(dx)
     dy = abs(dy)
     if dx > dy:
+        print("Motor X Moving ", dirX)
         over = dx / 2
         for i in range(0, dx):
             # Todo: conversion between int to steps
@@ -104,6 +105,7 @@ def move_line(newx, newy):
                 motorY.move_one_cycle(dirY)
             time.sleep(0.005)  # pause for delay
     else:
+        print("Motor Y Moving ", dirY)
         over = dy / 2
         for i in range(0, dy):
             motorX.move_one_cycle(dirX)
