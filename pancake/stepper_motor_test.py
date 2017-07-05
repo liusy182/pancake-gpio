@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 
-from pancake.steppermotor import StepperMotor
+from steppermotor import StepperMotor
 
 # In case other pins required. temporary put pin_x and pin_y as list
 PINS_X = {
