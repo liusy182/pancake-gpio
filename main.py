@@ -5,22 +5,15 @@ import RPi.GPIO as GPIO
 
 from pancake.steppermotor import StepperMotor
 
+# In case other pins required. temporary put pin_x and pin_y as list
 PINS_X = {
-    'ENA': 11,
-    'IN1': 13,
-    'IN2': 15,
-    'IN3': 12,
-    'IN4': 16,
-    'ENB': 18
+    'IN': 11,
+    'DIR': 15
 }
 
 PINS_Y = {
-    'ENA': 19,
-    'IN1': 21,
-    'IN2': 23,
-    'IN3': 22,
-    'IN4': 24,
-    'ENB': 26
+    'IN': 12,
+    'DIR': 16
 }
 
 motorX = StepperMotor(PINS_X)
