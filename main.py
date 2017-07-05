@@ -53,7 +53,6 @@ def parse(filename):
 def print_cake(cmds):
     for cmd in cmds:
         if cmd.startswith('G00'):
-            print("G00 ")
             m = re.search('G00\sX(\S+)\sY(\S+)', cmd)
             if not m:
                 continue
