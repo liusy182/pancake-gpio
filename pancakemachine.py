@@ -2,26 +2,35 @@ from __future__ import absolute_import
 
 import re
 import time
+import threading
 
 import RPi.GPIO as GPIO
 
 from pancake.steppermotor import StepperMotor
 
 
-
 class PancakeMachine(object):
 
-    def __init__(self, pinsx, pinsy):
+    def __init__(self, pinsx, pinsy, delay):
         self.motorX = StepperMotor(pinsx)
         self.motorY = StepperMotor(pinsy)
+        self.delay = delay
+        self.delay_lock = threading.lock()
 
     def start(self, filename):
         self.stopped = False
         instructions = self.parse(file)
-        self.print_cake(instructions)
+
+        self.print_thread = threading.Thread(target=self.print_cake, args=(instructions,))
+        self.print_thread.start()
 
     def stop(self):
         self.stopped = True
+
+    def changeDelay(self, delay):
+        self.delay_lock.acquire()
+        self.delay = delay
+        self.delay_lock.release()
 
     def parse(filename):
         """
@@ -89,25 +98,31 @@ class PancakeMachine(object):
         dirY = 1 if dy > 0 else -1
         dx = abs(dx)
         dy = abs(dy)
+
+        self.delay_lock.acquire()
+        cur_delay = self.delay
+        self.delay_lock.release()
+
         if dx > dy:
             print("Motor X Moving ", dirX)
             over = dx / 2
             for i in range(0, dx):
                 # Todo: conversion between int to steps
-                self.motorX.move_one_cycle(dirX)
+                self.motorX.move_one_cycle(dirX, cur_delay)
                 over += dy
                 if over >= dx:
                     over -= dx
-                    self.motorY.move_one_cycle(dirY)
+                    self.motorY.move_one_cycle(dirY, cur_delay)
         else:
             print("Motor Y Moving ", dirY)
             over = dy / 2
             for i in range(0, dy):
-                self.motorX.move_one_cycle(dirX)
+                self.motorX.move_one_cycle(dirX, cur_delay)
                 over += dx
                 if over >= dy:
                     over -= dy
-                    self.motorY.move_one_cycle(dirY)
+                    self.motorY.move_one_cycle(dirY, cur_delay)
+        
         self.motorX.pos = newx
         self.motorY.pos = newy
 

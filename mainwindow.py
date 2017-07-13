@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 import sys
-import threading
 import PyQt5
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
@@ -10,11 +9,6 @@ import ui_mainwindow
 from pancakemachine_mock import PancakeMachine
 
 class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
-
-    current_value = 5
-    max_value = 10
-    min_value = 0
-    value_step = 1
 
     def isStartClicked(self):
         return self.btnStartEnd.isChecked()
@@ -25,24 +19,31 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             print("Start!")
             self.btnStartEnd.setText(_translate("MainWindow", "Stop"))
             file = "sample.gcode"  # Change to get from Autodesk Cloud Storage later
-            self.pancake_thread = threading.Thread(target=self.pancake_machine.start, args=(file,))
-            self.pancake_thread.start()
+            self.pancake_machine.start(file)
         else:
             print("Stop!")
             self.btnStartEnd.setText(_translate("MainWindow", "Start"))
             self.pancake_machine.stop()
 
     def pressedOnButton(self):
-        if self.current_value < self.max_value:
-            self.current_value += self.value_step
-        print (self.current_value)
+        if self.delay < self.max_delay:
+            self.delay += self.delay_step
+            self.pancake_machine.changeDelay(self.delay)
+        print (self.delay)
 
     def pressedOffButton(self):
-        if self.current_value > self.min_value:
-            self.current_value -= self.value_step
-        print (self.current_value)
+        if self.delay > self.min_delay:
+            self.delay -= self.delay_step
+            self.pancake_machine.changeDelay(self.delay)
+        print (self.delay)
 
     def __init__(self, pinsx, pinsy):
+        self.delay = 0.005
+        self.max_delay = 0.01
+        self.min_delay = 0
+        self.delay_step = 0.001
+
+
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
 
@@ -50,5 +51,9 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.btnOff.clicked.connect(lambda: self.pressedOffButton())
         self.btnStartEnd.clicked.connect(lambda: self.pressedStartEndButton())
 
-        self.pancake_machine = PancakeMachine(pinsx, pinsy)
+        self.pancake_machine = PancakeMachine(pinsx, pinsy, self.delay)
 
+    def closeEvent(self, event):
+        print("User has clicked the red x on the main window")
+        self.pancake_machine.stop()
+        event.accept()

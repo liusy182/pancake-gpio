@@ -9,14 +9,13 @@ import RPi.GPIO as GPIO
 class StepperMotor(object):
     def __init__(self, pins):
         self.pins = pins
-        self.delay = 0.005
         self.pos = 0
 
-    def move_one_cycle(self, dir=1):
+    def move_one_cycle(self, dir=1, delay):
         if dir == 1:
-            self.forward(self.delay, 20)
+            self.forward(delay, 20)
         else:
-            self.backward(self.delay, 20)
+            self.backward(delay, 20)
 
     def forward(self, delay, steps):
         """
