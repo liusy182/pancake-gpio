@@ -15,11 +15,11 @@ class PancakeMachine(object):
         self.motorX = StepperMotor(pinsx)
         self.motorY = StepperMotor(pinsy)
         self.delay = delay
-        self.delay_lock = threading.lock()
+        self.delay_lock = threading.Lock()
 
     def start(self, filename):
         self.stopped = False
-        instructions = self.parse(file)
+        instructions = self.parse(filename)
 
         self.print_thread = threading.Thread(target=self.print_cake, args=(instructions,))
         self.print_thread.start()
@@ -32,7 +32,7 @@ class PancakeMachine(object):
         self.delay = delay
         self.delay_lock.release()
 
-    def parse(filename):
+    def parse(self, filename):
         """
         function to parse gcode file and converts it to a list of commands
         Possible Commands 
@@ -51,7 +51,7 @@ class PancakeMachine(object):
         return lines
 
 
-    def print_cake(cmds):
+    def print_cake(self, cmds):
         print("Pancake printing...")
         for cmd in cmds:
             if self.stopped:
@@ -85,7 +85,7 @@ class PancakeMachine(object):
                 continue
 
 
-    def move_line(newx, newy):
+    def move_line(self, newx, newy):
         """
         Function to move two motors in line
         :param newx: 

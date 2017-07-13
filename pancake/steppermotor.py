@@ -11,7 +11,7 @@ class StepperMotor(object):
         self.pins = pins
         self.pos = 0
 
-    def move_one_cycle(self, dir=1, delay):
+    def move_one_cycle(self, dir, delay):
         if dir == 1:
             self.forward(delay, 20)
         else:

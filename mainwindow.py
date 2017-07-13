@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
 import ui_mainwindow
-from pancakemachine_mock import PancakeMachine
+from pancakemachine import PancakeMachine
 
 class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 

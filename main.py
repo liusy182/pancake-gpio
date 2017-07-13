@@ -2,6 +2,8 @@ import sys
 import PyQt5
 from PyQt5.QtWidgets import *
 
+import RPi.GPIO as GPIO
+
 from mainwindow import MainWindow
 
 # In case other pins required. temporary put pin_x and pin_y as list
@@ -22,20 +24,20 @@ def setup():
     """
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
-    GPIO.setup(PINS_X.values(), GPIO.OUT, initial=GPIO.HIGH)
-    GPIO.setup(PINS_Y.values(), GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.setup(list(PINS_X.values()), GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.setup(list(PINS_Y.values()), GPIO.OUT, initial=GPIO.HIGH)
     
 def cleanup():
     GPIO.cleanup()
       
 
 def main():
-    #setup()
+    setup()
     app = QApplication(sys.argv)
     form = MainWindow(PINS_X, PINS_Y)
     form.show()
     sys.exit(app.exec_())
-    #cleanup()
+    cleanup()
 
 if __name__ == "__main__":
     main()
