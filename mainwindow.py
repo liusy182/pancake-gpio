@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 import sys
+import threading
 import PyQt5
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
@@ -24,10 +25,12 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             print("Start!")
             self.btnStartEnd.setText(_translate("MainWindow", "Stop"))
             file = "sample.gcode"  # Change to get from Autodesk Cloud Storage later
-            self.pancake_machine.start(file)
+            self.pancake_thread = threading.Thread(target=self.pancake_machine.start, args=(file,))
+            self.pancake_thread.start()
         else:
             print("Stop!")
             self.btnStartEnd.setText(_translate("MainWindow", "Start"))
+            self.pancake_machine.stop()
 
     def pressedOnButton(self):
         if self.current_value < self.max_value:

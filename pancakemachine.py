@@ -16,8 +16,12 @@ class PancakeMachine(object):
         self.motorY = StepperMotor(pinsy)
 
     def start(self, filename):
+        self.stopped = False
         instructions = self.parse(file)
         self.print_cake(instructions)
+
+    def stop(self):
+        self.stopped = True
 
     def parse(filename):
         """
@@ -39,7 +43,12 @@ class PancakeMachine(object):
 
 
     def print_cake(cmds):
+        print("Pancake printing...")
         for cmd in cmds:
+            if self.stopped:
+                print("Pancake stopping...")
+                break
+            
             if cmd.startswith('G00'):
                 m = re.search('G00\sX(\S+)\sY(\S+)', cmd)
                 if not m:
