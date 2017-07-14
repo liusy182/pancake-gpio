@@ -14,6 +14,10 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
     def isStartClicked(self):
         return self.btnStartEnd.isChecked()
 
+    def checkFileName(self):
+        self.btnStartEnd.setEnabled(bool(self.filename))
+        self.edtFilePath.setText(self.filename)
+
     def pressedStartEndButton(self):
         _translate = QtCore.QCoreApplication.translate
         if self.isStartClicked():
@@ -26,7 +30,8 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             self.pancake_machine.stop()
 
     def pressedBrowseButton(self):
-        filename = QFileDialog.getOpenFileName(None, "Open File", os.getcwd(), "gcode file (*.gcode)")
+        self.filename, _ = QFileDialog.getOpenFileName(None, "Open File", os.getcwd(), "gcode file (*.gcode)")
+        self.checkFileName()
 
     def pressedOnButton(self):
         if self.delay < self.max_delay:
@@ -45,8 +50,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.max_delay = 0.01
         self.min_delay = 0
         self.delay_step = 0.001
-        self.filename = "sample.gcode"
-
+        self.filename = ""
 
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
@@ -55,6 +59,8 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.btnOff.clicked.connect(lambda: self.pressedOffButton())
         self.btnStartEnd.clicked.connect(lambda: self.pressedStartEndButton())
         self.btnBrowse.clicked.connect(lambda: self.pressedBrowseButton())
+
+        self.checkFileName()
 
         self.pancake_machine = PancakeMachine(pinsx, pinsy, self.delay)
 
