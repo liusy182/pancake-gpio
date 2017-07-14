@@ -1,12 +1,13 @@
 from __future__ import absolute_import
 
 import sys
+import os
 import PyQt5
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
 import ui_mainwindow
-from pancakemachine import PancakeMachine
+from pancakemachine_mock import PancakeMachine
 
 class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
@@ -18,12 +19,14 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         if self.isStartClicked():
             print("Start!")
             self.btnStartEnd.setText(_translate("MainWindow", "Stop"))
-            file = "sample.gcode"  # Change to get from Autodesk Cloud Storage later
-            self.pancake_machine.start(file)
+            self.pancake_machine.start(self.filename)
         else:
             print("Stop!")
             self.btnStartEnd.setText(_translate("MainWindow", "Start"))
             self.pancake_machine.stop()
+
+    def pressedBrowseButton(self):
+        filename = QFileDialog.getOpenFileName(None, "Open File", os.getcwd(), "gcode file (*.gcode)")
 
     def pressedOnButton(self):
         if self.delay < self.max_delay:
@@ -42,6 +45,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.max_delay = 0.01
         self.min_delay = 0
         self.delay_step = 0.001
+        self.filename = "sample.gcode"
 
 
         super(self.__class__, self).__init__()
@@ -50,6 +54,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.btnOn.clicked.connect(lambda: self.pressedOnButton())
         self.btnOff.clicked.connect(lambda: self.pressedOffButton())
         self.btnStartEnd.clicked.connect(lambda: self.pressedStartEndButton())
+        self.btnBrowse.clicked.connect(lambda: self.pressedBrowseButton())
 
         self.pancake_machine = PancakeMachine(pinsx, pinsy, self.delay)
 

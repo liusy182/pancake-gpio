@@ -26,6 +26,13 @@
      </widget>
     </item>
     <item>
+     <widget class="QPushButton" name="btnBrowse">
+      <property name="text">
+       <string>Browse</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QPushButton" name="btnOn">
       <property name="text">
        <string>+</string>

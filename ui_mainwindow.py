@@ -22,6 +22,9 @@ class Ui_MainWindow(object):
         self.btnStartEnd.setCheckable(True)
         self.btnStartEnd.setObjectName("btnStartEnd")
         self.horizontalLayout.addWidget(self.btnStartEnd)
+        self.btnBrowse = QtWidgets.QPushButton(self.centralWidget)
+        self.btnBrowse.setObjectName("btnBrowse")
+        self.horizontalLayout.addWidget(self.btnBrowse)
         self.btnOn = QtWidgets.QPushButton(self.centralWidget)
         self.btnOn.setObjectName("btnOn")
         self.horizontalLayout.addWidget(self.btnOn)
@@ -47,6 +50,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Pancake"))
         self.btnStartEnd.setText(_translate("MainWindow", "Start"))
+        self.btnBrowse.setText(_translate("MainWindow", "Browse"))
         self.btnOn.setText(_translate("MainWindow", "+"))
         self.btnOff.setText(_translate("MainWindow", "-"))
 
