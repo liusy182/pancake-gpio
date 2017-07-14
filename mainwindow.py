@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
 import ui_mainwindow
-from pancakemachine_mock import PancakeMachine
+from pancakemachine import PancakeMachine
 
 class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
@@ -17,6 +17,13 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
     def checkFileName(self):
         self.btnStartEnd.setEnabled(bool(self.filename))
         self.edtFilePath.setText(self.filename)
+
+    def getCurrentDelayFromSlider(self):
+        delay = (11 - self.sliderSpeed.value()) / 1000.0
+        if delay != self.delay:
+            self.delay = delay
+            return True
+        return False
 
     def pressedStartEndButton(self):
         _translate = QtCore.QCoreApplication.translate
@@ -29,36 +36,31 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             self.btnStartEnd.setText(_translate("MainWindow", "Start"))
             self.pancake_machine.stop()
 
+    def sliderSpeedReleased(self):
+        if self.getCurrentDelayFromSlider():
+            self.pancake_machine.changeDelay(self.delay)
+
     def pressedBrowseButton(self):
         self.filename, _ = QFileDialog.getOpenFileName(None, "Open File", os.getcwd(), "gcode file (*.gcode)")
         self.checkFileName()
 
-    def pressedOnButton(self):
-        if self.delay < self.max_delay:
-            self.delay += self.delay_step
-            self.pancake_machine.changeDelay(self.delay)
-        print (self.delay)
-
-    def pressedOffButton(self):
-        if self.delay > self.min_delay:
-            self.delay -= self.delay_step
-            self.pancake_machine.changeDelay(self.delay)
-        print (self.delay)
-
     def __init__(self, pinsx, pinsy):
-        self.delay = 0.005
-        self.max_delay = 0.01
-        self.min_delay = 0
-        self.delay_step = 0.001
         self.filename = ""
+        self.delay = 0
 
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
 
-        self.btnOn.clicked.connect(lambda: self.pressedOnButton())
-        self.btnOff.clicked.connect(lambda: self.pressedOffButton())
         self.btnStartEnd.clicked.connect(lambda: self.pressedStartEndButton())
         self.btnBrowse.clicked.connect(lambda: self.pressedBrowseButton())
+        self.sliderSpeed.sliderReleased.connect(lambda: self.sliderSpeedReleased())
+
+        self.sliderSpeed.setMinimum(1)  # 0.01
+        self.sliderSpeed.setMaximum(10) # 0.001
+        self.sliderSpeed.setSingleStep(1)
+        self.sliderSpeed.setValue(6)    # 0.005
+
+        self.getCurrentDelayFromSlider()
 
         self.checkFileName()
 

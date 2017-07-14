@@ -23,6 +23,7 @@ class PancakeMachine(object):
         self.stopped = True
 
     def changeDelay(self, delay):
+        print("change delay to", delay)
         self.delay_lock.acquire()
         self.delay = delay
         self.delay_lock.release()
