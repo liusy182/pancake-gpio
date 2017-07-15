@@ -30,8 +30,12 @@ def setup():
 
 if __name__ == "__main__":
     setup()
+    print("x forwaring 200")
     motorX.forward(0.005, 200)
+    print("x backwarding 200")
     motorX.backward(0.005, 200)
-    motorY.forward(0.005, 200)
+    print("y forwaring 200")
+    motorY.forward(0.005, 200)    
+    print("y backwarding 200")
     motorY.backward(0.005,200)
     GPIO.cleanup()
