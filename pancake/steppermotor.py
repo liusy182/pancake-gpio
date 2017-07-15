@@ -26,6 +26,7 @@ class StepperMotor(object):
         GPIO.output(self.pins['DIR'], 1)
         for i in range(0, steps):
             GPIO.output(self.pins['IN'], 1)
+            time.sleep(delay)
         GPIO.output(self.pins['IN'], 0)
 
     def backward(self, delay, steps):
@@ -37,4 +38,5 @@ class StepperMotor(object):
         GPIO.output(self.pins['DIR'], 0)
         for i in range(0, steps):
             GPIO.output(self.pins['IN'], 1)
+            time.sleep(delay)
         GPIO.output(self.pins['IN'], 0)
