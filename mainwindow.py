@@ -46,7 +46,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
     def __init__(self, pinsx, pinsy):
         self.filename = ""
-        self.delay = 0
+        self.delay = 0.0005
 
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
