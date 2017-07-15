@@ -5,7 +5,7 @@ from steppermotor import StepperMotor
 # In case other pins required. temporary put pin_x and pin_y as list
 PINS_X = {
     'IN': 11,
-    'DIR': 15
+    'DIR': 19
 }
 
 PINS_Y = {
@@ -32,4 +32,6 @@ if __name__ == "__main__":
     setup()
     motorX.forward(0.005, 200)
     motorX.backward(0.005, 200)
+    motorY.forward(0.005, 200)
+    motorY.backward(0.005,200)
     GPIO.cleanup()
