@@ -24,7 +24,7 @@ def setup():
     """
     GPIO.setmode(GPIO.BOARD)
     GPIO.setwarnings(False)
-    GPIO.setup(list(PINS_X.values()), GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(list(PINS_X.values()), GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(list(PINS_Y.values()), GPIO.OUT, initial=GPIO.HIGH)
 
 
