@@ -7,10 +7,13 @@ from PyQt5 import QtCore
 
 class PancakeMachine(object):
 
-    def __init__(self, pinsx, pinsy, delay):
+    def __init__(self, pinsx, pinsy, delay, pumper_pin, pumper_speed):
         print(pinsx, pinsy)
         self.delay = delay
         self.delay_mutex = QtCore.QMutex()
+
+        self.pumper_speed = pumper_speed
+        self.speed_mutex = QtCore.QMutex()
 
     def start(self, filename):
         self.stopped = False
@@ -26,6 +29,25 @@ class PancakeMachine(object):
         self.delay_mutex.lock()
         self.delay = delay
         self.delay_mutex.unlock()
+
+    def testPumper(self):
+        self.stopTest = False
+        while self.stopTest == False:
+            print("pancake pump testing...")
+            self.speed_mutex.lock()
+            pumper_speed = self.pumper_speed
+            self.speed_mutex.unlock()
+
+            print("current speed:", pumper_speed)
+            time.sleep(1)
+
+    def stopTestPumper(self):
+        self.stopTest = True
+
+    def changePumperSpeed(self, speed):
+        self.speed_mutex.lock()
+        self.pumper_speed = speed
+        self.speed_mutex.unlock()
 
     def print_cake(self):
         cnt = 5

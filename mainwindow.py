@@ -21,8 +21,57 @@ class PancakePrintThread(QtCore.QThread):
     def run(self):
         if self.pancake_machine.start(self.filename):
             self.pancake_printed.emit()
+    
+class PumperTestThread(QtCore.QThread):
+
+    def __init__(self, pancake_machine):
+        QtCore.QThread.__init__(self)
+        self.pancake_machine = pancake_machine
+
+    def run(self):
+        self.pancake_machine.testPumper()
 
 class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
+
+    def __init__(self, pinsx, pinsy, pumper_pin):
+        self.filename = ""
+        self.delay = 0.002
+        self.pinsx = pinsx
+        self.pinsy = pinsy
+
+        self.pumper_pin = pumper_pin
+        self.pumper_speed = 0.25
+        self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.delay, self.pumper_pin, self.pumper_speed)
+
+        super(self.__class__, self).__init__()
+        self.setupUi(self) # gets defined in the UI file
+
+        self.btnStartEnd.clicked.connect(lambda: self.pressedStartEndButton())
+        self.btnBrowse.clicked.connect(lambda: self.pressedBrowseButton())
+        self.sliderSpeed.sliderReleased.connect(lambda: self.sliderSpeedReleased())
+
+        self.btnTest.clicked.connect(lambda: self.pressedPumperTestButton())
+        self.sliderPumper.sliderReleased.connect(lambda: self.sliderPumperSpeedReleased())
+
+        self.resetStartEndButton()
+
+        self.sliderSpeed.setMinimum(1)  # 0.01
+        self.sliderSpeed.setMaximum(10) # 0.001
+        self.sliderSpeed.setSingleStep(1)
+        self.sliderSpeed.setValue(6)    # 0.005
+
+        self.getCurrentDelayFromSlider()
+
+        self.sliderPumper.setMinimum(1)  # 0.05
+        self.sliderPumper.setMaximum(10) # 0.5
+        self.sliderPumper.setSingleStep(1)
+        self.sliderPumper.setValue(5)    # 0.25
+
+        self.getCurrentPumperSpeedFromSlider()
+
+
+        self.checkFileName()
+
 
     def isStartClicked(self):
         return self.btnStartEnd.isChecked()
@@ -49,8 +98,6 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         if self.isStartClicked():
             print("Start!")
             self.btnStartEnd.setText(_translate("MainWindow", "Stop"))
-
-            self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.delay)
             
             self.pancake_printer = PancakePrintThread(self.filename, self.pancake_machine)
             self.pancake_printer.pancake_printed.connect(self.onPancakePrinted)
@@ -68,32 +115,6 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.filename, _ = QFileDialog.getOpenFileName(None, "Open File", "/home/pi/sync", "gcode file (*.gcode)")
         self.checkFileName()
 
-    def __init__(self, pinsx, pinsy):
-        self.filename = ""
-        self.delay = 0.002
-        self.pinsx = pinsx
-        self.pinsy = pinsy
-        self.pancake_machine = None
-
-        super(self.__class__, self).__init__()
-        self.setupUi(self) # gets defined in the UI file
-
-        self.btnStartEnd.clicked.connect(lambda: self.pressedStartEndButton())
-        self.btnBrowse.clicked.connect(lambda: self.pressedBrowseButton())
-        self.sliderSpeed.sliderReleased.connect(lambda: self.sliderSpeedReleased())
-
-        self.resetStartEndButton()
-
-        self.sliderSpeed.setMinimum(1)  # 0.01
-        self.sliderSpeed.setMaximum(10) # 0.001
-        self.sliderSpeed.setSingleStep(1)
-        self.sliderSpeed.setValue(6)    # 0.005
-
-        self.getCurrentDelayFromSlider()
-
-        self.checkFileName()
-
-
     def closeEvent(self, event):
         print("User has clicked the red x on the main window")
         if not self.pancake_machine is None:
@@ -103,3 +124,30 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
     def onPancakePrinted(self):
         print("Finished")
         self.resetStartEndButton()
+
+    def isPumperTestClicked(self):
+        return self.btnTest.isChecked()
+
+    def resetartPumperTestButton(self):
+        self.btnTest.setChecked(False)
+
+    def getCurrentPumperSpeedFromSlider(self):
+        speed = self.sliderPumper.value() / 20.0
+        if speed != self.pumper_speed:
+            self.pumper_speed = speed
+            return True
+        return False
+
+    def pressedPumperTestButton(self):
+        if self.isPumperTestClicked():
+            print("Test!")
+            
+            self.pancake_test = PumperTestThread(self.pancake_machine)
+            self.pancake_test.start()
+        else:
+            print("Stop!")
+            self.pancake_machine.stopTestPumper()
+
+    def sliderPumperSpeedReleased(self):
+        if self.getCurrentPumperSpeedFromSlider():
+            self.pancake_machine.changePumperSpeed(self.pumper_speed)

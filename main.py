@@ -17,6 +17,8 @@ PINS_Y = {
     'DIR': 16
 }
 
+PIN_PUMPER = 13
+
 def setup():
     """
     Setup function to initialize GPIO Board
@@ -34,7 +36,7 @@ def cleanup():
 def main():
     setup()
     app = QApplication(sys.argv)
-    form = MainWindow(PINS_X, PINS_Y)
+    form = MainWindow(PINS_X, PINS_Y, PIN_PUMPER)
     form.show()
     sys.exit(app.exec_())
     cleanup()

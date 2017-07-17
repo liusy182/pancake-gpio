@@ -7,15 +7,20 @@ from PyQt5 import QtCore
 import RPi.GPIO as GPIO
 
 from pancake.steppermotor import StepperMotor
+from pancake.pumper import Pumper
 
 
 class PancakeMachine(object):
 
-    def __init__(self, pinsx, pinsy, delay):
+    def __init__(self, pinsx, pinsy, delay, pumper_pin, pumper_speed):
         self.motorX = StepperMotor(pinsx)
         self.motorY = StepperMotor(pinsy)
         self.delay = delay
         self.delay_mutex = QtCore.QMutex()
+
+        self.pumper = Pumper(pumper_pin)
+        self.pumper_speed = pumper_speed
+        self.speed_mutex = QtCore.QMutex()
 
     def start(self, filename):
         self.stopped = False
@@ -29,6 +34,25 @@ class PancakeMachine(object):
         self.delay_mutex.lock()
         self.delay = delay
         self.delay_mutex.unlock()
+
+    def testPumper(self):
+        self.stopTest = False
+        while self.stopTest == False:
+            print("pancake pump testing...")
+            self.speed_mutex.lock()
+            pumper_speed = self.pumper_speed
+            self.speed_mutex.unlock()
+
+            print("current speed:", pumper_speed)
+            self.pumper.run_one_cycle(pumper_speed)
+
+    def stopTestPumper(self):
+        self.stopTest = True
+
+    def changePumperSpeed(self, speed):
+        self.speed_mutex.lock()
+        self.pumper_speed = speed
+        self.speed_mutex.unlock()
 
     def parse(self, filename):
         """
