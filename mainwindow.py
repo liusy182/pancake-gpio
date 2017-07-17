@@ -38,7 +38,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.sliderSpeed.setEnabled(bool(self.filename))
 
     def getCurrentDelayFromSlider(self):
-        delay = (11 - self.sliderSpeed.value()) / 1000.0
+        delay = (11 - self.sliderSpeed.value()) / 500.0
         if delay != self.delay:
             self.delay = delay
             return True
