@@ -95,7 +95,8 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
     def closeEvent(self, event):
         print("User has clicked the red x on the main window")
-        self.pancake_machine.stop()
+        if self.pancake_machine:
+            self.pancake_machine.stop()
         event.accept()
 
     def onPancakePrinted(self):
