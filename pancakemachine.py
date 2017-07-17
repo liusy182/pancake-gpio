@@ -65,7 +65,8 @@ class PancakeMachine(object):
                 self.move_line(int(float(x)), int(float(y)))
             elif cmd.startswith('G28'):
                 # Resets X, Y
-                self.move_line(0, 0)
+                # self.move_line(0, 0)
+                continue
             elif cmd.startswith('G4'):
                 # Pause for certain milli secs
                 m = re.search('G00\sP(\S+)', cmd)
