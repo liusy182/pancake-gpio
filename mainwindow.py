@@ -35,6 +35,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
     def checkFileName(self):
         self.btnStartEnd.setEnabled(bool(self.filename))
         self.edtFilePath.setText(self.filename)
+        self.sliderSpeed.setEnabled(bool(self.filename))
 
     def getCurrentDelayFromSlider(self):
         delay = (11 - self.sliderSpeed.value()) / 1000.0
@@ -48,6 +49,8 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         if self.isStartClicked():
             print("Start!")
             self.btnStartEnd.setText(_translate("MainWindow", "Stop"))
+
+            self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.delay)
             
             self.pancake_printer = PancakePrintThread(self.filename, self.pancake_machine)
             self.pancake_printer.pancake_printed.connect(self.onPancakePrinted)
@@ -68,6 +71,8 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
     def __init__(self, pinsx, pinsy):
         self.filename = ""
         self.delay = 0.0005
+        self.pinsx = pinsx
+        self.pinsy = pinsy
 
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
@@ -87,7 +92,6 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
         self.checkFileName()
 
-        self.pancake_machine = PancakeMachine(pinsx, pinsy, self.delay)
 
     def closeEvent(self, event):
         print("User has clicked the red x on the main window")
