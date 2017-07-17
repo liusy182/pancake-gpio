@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
 import ui_mainwindow
-from pancakemachine import PancakeMachine
+from pancakemachine_mock import PancakeMachine
 
 class PancakePrintThread(QtCore.QThread):
 
@@ -73,6 +73,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.delay = 0.0005
         self.pinsx = pinsx
         self.pinsy = pinsy
+        self.pancake_machine = None
 
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
@@ -95,7 +96,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
     def closeEvent(self, event):
         print("User has clicked the red x on the main window")
-        if self.pancake_machine:
+        if not self.pancake_machine is None:
             self.pancake_machine.stop()
         event.accept()
 
