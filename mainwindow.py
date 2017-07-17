@@ -9,10 +9,28 @@ from PyQt5 import QtCore
 import ui_mainwindow
 from pancakemachine import PancakeMachine
 
+class PancakePrintThread(QtCore.QThread):
+
+    pancake_printed = QtCore.pyqtSignal()
+
+    def __init__(self, filename, pancake_machine):
+        QtCore.QThread.__init__(self)
+        self.filename = filename
+        self.pancake_machine = pancake_machine
+
+    def run(self):
+        if self.pancake_machine.start(self.filename):
+            self.pancake_printed.emit()
+
 class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
     def isStartClicked(self):
         return self.btnStartEnd.isChecked()
+
+    def resetStartEndButton(self):
+        self.btnStartEnd.setChecked(False)
+        _translate = QtCore.QCoreApplication.translate
+        self.btnStartEnd.setText(_translate("MainWindow", "Start"))
 
     def checkFileName(self):
         self.btnStartEnd.setEnabled(bool(self.filename))
@@ -30,7 +48,10 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         if self.isStartClicked():
             print("Start!")
             self.btnStartEnd.setText(_translate("MainWindow", "Stop"))
-            self.pancake_machine.start(self.filename)
+            
+            self.pancake_printer = PancakePrintThread(self.filename, self.pancake_machine)
+            self.pancake_printer.pancake_printed.connect(self.onPancakePrinted)
+            self.pancake_printer.start()
         else:
             print("Stop!")
             self.btnStartEnd.setText(_translate("MainWindow", "Start"))
@@ -55,6 +76,8 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.btnBrowse.clicked.connect(lambda: self.pressedBrowseButton())
         self.sliderSpeed.sliderReleased.connect(lambda: self.sliderSpeedReleased())
 
+        self.resetStartEndButton()
+
         self.sliderSpeed.setMinimum(1)  # 0.01
         self.sliderSpeed.setMaximum(10) # 0.001
         self.sliderSpeed.setSingleStep(1)
@@ -70,3 +93,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         print("User has clicked the red x on the main window")
         self.pancake_machine.stop()
         event.accept()
+
+    def onPancakePrinted(self):
+        print("Finished")
+        self.resetStartEndButton()

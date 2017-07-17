@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import re
 import time
-import threading
+from PyQt5 import QtCore
 
 
 class PancakeMachine(object):
@@ -10,30 +10,34 @@ class PancakeMachine(object):
     def __init__(self, pinsx, pinsy, delay):
         print(pinsx, pinsy)
         self.delay = delay
-        self.delay_lock = threading.Lock()
+        self.delay_mutex = QtCore.QMutex()
 
     def start(self, filename):
         self.stopped = False
         print("pancake start!")
 
-        self.print_thread = threading.Thread(target=self.print_cake)
-        self.print_thread.start()
+        return self.print_cake()
 
     def stop(self):
         self.stopped = True
 
     def changeDelay(self, delay):
         print("change delay to", delay)
-        self.delay_lock.acquire()
+        self.delay_mutex.lock()
         self.delay = delay
-        self.delay_lock.release()
+        self.delay_mutex.unlock()
 
     def print_cake(self):
-        while self.stopped == False:
+        cnt = 5
+        while cnt > 0:
+            if self.stopped:
+                return False
             print("pancake printing...")
-            self.delay_lock.acquire()
+            self.delay_mutex.lock()
             cur_delay = self.delay
-            self.delay_lock.release()
+            self.delay_mutex.unlock()
 
             print("current delay:", cur_delay)
             time.sleep(1)
+            cnt -= 1
+        return True

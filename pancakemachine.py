@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import re
 import time
-import threading
+from PyQt5 import QtCore
 
 import RPi.GPIO as GPIO
 
@@ -15,22 +15,20 @@ class PancakeMachine(object):
         self.motorX = StepperMotor(pinsx)
         self.motorY = StepperMotor(pinsy)
         self.delay = delay
-        self.delay_lock = threading.Lock()
+        self.delay_mutex = QtCore.QMutex()
 
     def start(self, filename):
         self.stopped = False
         instructions = self.parse(filename)
-
-        self.print_thread = threading.Thread(target=self.print_cake, args=(instructions,))
-        self.print_thread.start()
+        return self.print_cake(instructions)
 
     def stop(self):
         self.stopped = True
 
     def changeDelay(self, delay):
-        self.delay_lock.acquire()
+        self.delay_mutex.lock()
         self.delay = delay
-        self.delay_lock.release()
+        self.delay_mutex.unlock()
 
     def parse(self, filename):
         """
@@ -56,7 +54,7 @@ class PancakeMachine(object):
         for cmd in cmds:
             if self.stopped:
                 print("Pancake stopping...")
-                break
+                return False
             
             if cmd.startswith('G00'):
                 m = re.search('G00\sX(\S+)\sY(\S+)', cmd)
@@ -83,6 +81,7 @@ class PancakeMachine(object):
             elif cmd.startswith('M107'):
                 # Pump off
                 continue
+        return True
 
 
     def move_line(self, newx, newy):
@@ -99,9 +98,9 @@ class PancakeMachine(object):
         dx = abs(dx)
         dy = abs(dy)
 
-        self.delay_lock.acquire()
+        self.delay_mutex.lock()
         cur_delay = self.delay
-        self.delay_lock.release()
+        self.delay_mutex.unlock()
 
         if dx > dy:
             print("Motor X Moving ", dirX)
