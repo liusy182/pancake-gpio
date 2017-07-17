@@ -17,9 +17,9 @@
 ;useColorSpeed: false
 ;botColorSpeed: 6600,5280,5280,3300
 ;----------------------------------------
-W1 X42 Y210 L485 T0 ;Define Workspace of this file
+;W1 X42 Y210 L485 T0 ;Define Workspace of this file
 G21 ;Set units to MM
-G1 F4620 ;Set Speed
+;G1 F4620 ;Set Speed
 M107 ;Pump off
 G4 P1000 ;Pause for 1000 milliseconds
 M84 ;Motors off
