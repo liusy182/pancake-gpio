@@ -65,7 +65,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             self.pancake_machine.changeDelay(self.delay)
 
     def pressedBrowseButton(self):
-        self.filename, _ = QFileDialog.getOpenFileName(None, "Open File", os.getcwd(), "gcode file (*.gcode)")
+        self.filename, _ = QFileDialog.getOpenFileName(None, "Open File", "/home/pi/sync", "gcode file (*.gcode)")
         self.checkFileName()
 
     def __init__(self, pinsx, pinsy):
