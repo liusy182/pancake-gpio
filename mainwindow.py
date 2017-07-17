@@ -70,7 +70,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
     def __init__(self, pinsx, pinsy):
         self.filename = ""
-        self.delay = 0.001
+        self.delay = 0.002
         self.pinsx = pinsx
         self.pinsy = pinsy
 

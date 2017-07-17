@@ -11,7 +11,7 @@ class StepperMotor(object):
         self.pins = pins
         self.pos = 0
 
-    def move_one_cycle(self, dir, delay):
+    def move_one_cycle(self, delay):
         if dir == 1:
             self.forward(delay)
         else:
@@ -24,6 +24,7 @@ class StepperMotor(object):
         :return: nothing
         """
         GPIO.output(self.pins['DIR'], 1)
+
         GPIO.output(self.pins['IN'], 1)
         time.sleep(delay)
         GPIO.output(self.pins['IN'], 0)
@@ -35,6 +36,7 @@ class StepperMotor(object):
         :return: nothing
         """
         GPIO.output(self.pins['DIR'], 0)
+
         GPIO.output(self.pins['IN'], 1)
         time.sleep(delay)
         GPIO.output(self.pins['IN'], 0)
