@@ -13,33 +13,28 @@ class StepperMotor(object):
 
     def move_one_cycle(self, dir, delay):
         if dir == 1:
-            self.forward(delay, 20)
+            self.forward(delay)
         else:
-            self.backward(delay, 20)
+            self.backward(delay)
 
-    def forward(self, delay, steps):
+    def forward(self, delay):
         """
         :param delay: the delay in each step
         :param steps: how many steps should this iteration run
         :return: nothing
         """
         GPIO.output(self.pins['DIR'], 1)
-        for i in range(0, steps):
-            GPIO.output(self.pins['IN'], 1)
-            time.sleep(delay)
-            GPIO.output(self.pins['IN'], 0)
-            time.sleep(delay)
+        GPIO.output(self.pins['IN'], 1)
+        time.sleep(delay)
+        GPIO.output(self.pins['IN'], 0)
 
-
-    def backward(self, delay, steps):
+    def backward(self, delay):
         """
         :param delay: the delay in each step
         :param steps: how many steps should this iteration run
         :return: nothing
         """
         GPIO.output(self.pins['DIR'], 0)
-        for i in range(0, steps):
-            GPIO.output(self.pins['IN'], 1)
-            time.sleep(delay)
-            GPIO.output(self.pins['IN'], 0)
-            time.sleep(delay)
+        GPIO.output(self.pins['IN'], 1)
+        time.sleep(delay)
+        GPIO.output(self.pins['IN'], 0)
