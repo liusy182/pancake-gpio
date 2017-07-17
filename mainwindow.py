@@ -65,7 +65,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             self.pancake_machine.changeDelay(self.delay)
 
     def pressedBrowseButton(self):
-        self.filename, _ = QFileDialog.getOpenFileName(None, "Open File", os.getcwd(), "gcode file (*.gcode)")
+        self.filename, _ = QFileDialog.getOpenFileName(None, "Open File", "/home/pi/sync", "gcode file (*.gcode)")
         self.checkFileName()
 
     def __init__(self, pinsx, pinsy):
@@ -73,6 +73,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.delay = 0.002
         self.pinsx = pinsx
         self.pinsy = pinsy
+        self.pancake_machine = None
 
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
@@ -95,7 +96,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
     def closeEvent(self, event):
         print("User has clicked the red x on the main window")
-        if self.pancake_machine:
+        if not self.pancake_machine is None:
             self.pancake_machine.stop()
         event.accept()
 
