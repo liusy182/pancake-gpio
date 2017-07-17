@@ -38,7 +38,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.sliderSpeed.setEnabled(bool(self.filename))
 
     def getCurrentDelayFromSlider(self):
-        delay = (11 - self.sliderSpeed.value()) / 500.0
+        delay = (11 - self.sliderSpeed.value()) / 1000.0
         if delay != self.delay:
             self.delay = delay
             return True
@@ -50,7 +50,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             print("Start!")
             self.btnStartEnd.setText(_translate("MainWindow", "Stop"))
 
-            self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, 0.1)
+            self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.delay)
             
             self.pancake_printer = PancakePrintThread(self.filename, self.pancake_machine)
             self.pancake_printer.pancake_printed.connect(self.onPancakePrinted)
