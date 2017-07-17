@@ -87,7 +87,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.sliderSpeed.setMinimum(1)  # 0.01
         self.sliderSpeed.setMaximum(10) # 0.001
         self.sliderSpeed.setSingleStep(1)
-        self.sliderSpeed.setValue(6)    # 0.005
+        self.sliderSpeed.setValue(9)    # 0.005
 
         self.getCurrentDelayFromSlider()
 
