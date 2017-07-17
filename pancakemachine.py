@@ -104,7 +104,7 @@ class PancakeMachine(object):
 
         if dx > dy:
             print("Motor X Moving ", dirX)
-            over = dx
+            over = dx/2
             for i in range(0, dx):
                 # Todo: conversion between int to steps
                 self.motorX.move_one_cycle(dirX, cur_delay)
@@ -114,7 +114,7 @@ class PancakeMachine(object):
                     self.motorY.move_one_cycle(dirY, cur_delay)
         else:
             print("Motor Y Moving ", dirY)
-            over = dy
+            over = dy/2
             for i in range(0, dy):
                 self.motorX.move_one_cycle(dirX, cur_delay)
                 over += dx

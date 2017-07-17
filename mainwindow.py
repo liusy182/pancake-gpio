@@ -50,7 +50,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             print("Start!")
             self.btnStartEnd.setText(_translate("MainWindow", "Stop"))
 
-            self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.delay)
+            self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, 0.1)
             
             self.pancake_printer = PancakePrintThread(self.filename, self.pancake_machine)
             self.pancake_printer.pancake_printed.connect(self.onPancakePrinted)
