@@ -89,7 +89,8 @@ class PancakeMachine(object):
                 self.move_line(int(float(x)), int(float(y)))
             elif cmd.startswith('G28'):
                 # Resets X, Y
-                self.move_line(0, 0)
+                # self.move_line(0, 0)
+                continue
             elif cmd.startswith('G4'):
                 # Pause for certain milli secs
                 m = re.search('G00\sP(\S+)', cmd)
@@ -128,7 +129,7 @@ class PancakeMachine(object):
 
         if dx > dy:
             print("Motor X Moving ", dirX)
-            over = dx / 2
+            over = dx/2
             for i in range(0, dx):
                 # Todo: conversion between int to steps
                 self.motorX.move_one_cycle(dirX, cur_delay)
@@ -138,7 +139,7 @@ class PancakeMachine(object):
                     self.motorY.move_one_cycle(dirY, cur_delay)
         else:
             print("Motor Y Moving ", dirY)
-            over = dy / 2
+            over = dy/2
             for i in range(0, dy):
                 self.motorX.move_one_cycle(dirX, cur_delay)
                 over += dx

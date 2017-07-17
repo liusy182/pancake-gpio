@@ -58,7 +58,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.sliderSpeed.setMinimum(1)  # 0.01
         self.sliderSpeed.setMaximum(10) # 0.001
         self.sliderSpeed.setSingleStep(1)
-        self.sliderSpeed.setValue(6)    # 0.005
+        self.sliderSpeed.setValue(9)    # 0.005
 
         self.getCurrentDelayFromSlider()
 
@@ -114,6 +114,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
     def pressedBrowseButton(self):
         self.filename, _ = QFileDialog.getOpenFileName(None, "Open File", "/home/pi/sync", "gcode file (*.gcode)")
         self.checkFileName()
+
 
     def closeEvent(self, event):
         print("User has clicked the red x on the main window")
