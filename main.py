@@ -2,7 +2,7 @@ import sys
 import PyQt5
 from PyQt5.QtWidgets import *
 
-#import RPi.GPIO as GPIO
+import RPi.GPIO as GPIO
 
 from mainwindow import MainWindow
 
@@ -32,12 +32,12 @@ def cleanup():
       
 
 def main():
-    #setup()
+    setup()
     app = QApplication(sys.argv)
     form = MainWindow(PINS_X, PINS_Y)
     form.show()
     sys.exit(app.exec_())
-    #cleanup()
+    cleanup()
 
 if __name__ == "__main__":
     main()
