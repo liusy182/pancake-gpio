@@ -12,15 +12,15 @@ from pancake.pumper import Pumper
 
 class PancakeMachine(object):
 
-    def __init__(self, pinsx, pinsy, delay, pumper_pin, pumper_speed):
+    def __init__(self, pinsx, pinsy, motor_delay, pumper_pin, pumper_speed):
         self.motorX = StepperMotor(pinsx)
         self.motorY = StepperMotor(pinsy)
-        self.delay = delay
-        self.delay_mutex = QtCore.QMutex()
+        self.motor_delay = motor_delay
+        self.motor_delay_mutex = QtCore.QMutex()
 
         self.pumper = Pumper(pumper_pin)
         self.pumper_speed = pumper_speed
-        self.speed_mutex = QtCore.QMutex()
+        self.pumper_speed_mutex = QtCore.QMutex()
 
     def start(self, filename):
         self.stopped = False
@@ -30,29 +30,31 @@ class PancakeMachine(object):
     def stop(self):
         self.stopped = True
 
-    def changeDelay(self, delay):
-        self.delay_mutex.lock()
-        self.delay = delay
-        self.delay_mutex.unlock()
+    def changeMotorDelay(self, motor_delay):
+        self.motor_delay_mutex.lock()
+        self.motor_delay = motor_delay
+        self.motor_delay_mutex.unlock()
 
     def testPumper(self):
         self.stopTest = False
         while self.stopTest == False:
             print("pancake pump testing...")
-            self.speed_mutex.lock()
+            self.pumper_speed_mutex.lock()
             pumper_speed = self.pumper_speed
-            self.speed_mutex.unlock()
+            self.pumper_speed_mutex.unlock()
 
             print("current speed:", pumper_speed)
             self.pumper.run_one_cycle(pumper_speed)
+        # close it
+        self.pumper.reset()
 
     def stopTestPumper(self):
         self.stopTest = True
 
     def changePumperSpeed(self, speed):
-        self.speed_mutex.lock()
+        self.pumper_speed_mutex.lock()
         self.pumper_speed = speed
-        self.speed_mutex.unlock()
+        self.pumper_speed_mutex.unlock()
 
     def parse(self, filename):
         """
@@ -123,29 +125,29 @@ class PancakeMachine(object):
         dx = abs(dx)
         dy = abs(dy)
 
-        self.delay_mutex.lock()
-        cur_delay = self.delay
-        self.delay_mutex.unlock()
+        self.motor_delay_mutex.lock()
+        cur_motor_delay = self.motor_delay
+        self.motor_delay_mutex.unlock()
 
         if dx > dy:
             print("Motor X Moving ", dirX)
             over = dx/2
             for i in range(0, dx):
                 # Todo: conversion between int to steps
-                self.motorX.move_one_cycle(dirX, cur_delay)
+                self.motorX.move_one_cycle(dirX, cur_motor_delay)
                 over += dy
                 if over >= dx:
                     over -= dx
-                    self.motorY.move_one_cycle(dirY, cur_delay)
+                    self.motorY.move_one_cycle(dirY, cur_motor_delay)
         else:
             print("Motor Y Moving ", dirY)
             over = dy/2
             for i in range(0, dy):
-                self.motorX.move_one_cycle(dirX, cur_delay)
+                self.motorX.move_one_cycle(dirX, cur_motor_delay)
                 over += dx
                 if over >= dy:
                     over -= dy
-                    self.motorY.move_one_cycle(dirY, cur_delay)
+                    self.motorY.move_one_cycle(dirY, cur_motor_delay)
         
         self.motorX.pos = newx
         self.motorY.pos = newy

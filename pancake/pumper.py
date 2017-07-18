@@ -16,3 +16,6 @@ class Pumper(object):
         time.sleep(on_time)
         GPIO.output(self.pin, GPIO.LOW)
         time.sleep(self.cycle_time - on_time)
+
+    def reset(self):
+        GPIO.output(self.pin, GPIO.LOW)

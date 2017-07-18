@@ -7,13 +7,13 @@ from PyQt5 import QtCore
 
 class PancakeMachine(object):
 
-    def __init__(self, pinsx, pinsy, delay, pumper_pin, pumper_speed):
+    def __init__(self, pinsx, pinsy, motor_delay, pumper_pin, pumper_speed):
         print(pinsx, pinsy)
-        self.delay = delay
-        self.delay_mutex = QtCore.QMutex()
+        self.motor_delay = motor_delay
+        self.motor_delay_mutex = QtCore.QMutex()
 
         self.pumper_speed = pumper_speed
-        self.speed_mutex = QtCore.QMutex()
+        self.pumper_speed_mutex = QtCore.QMutex()
 
     def start(self, filename):
         self.stopped = False
@@ -24,19 +24,19 @@ class PancakeMachine(object):
     def stop(self):
         self.stopped = True
 
-    def changeDelay(self, delay):
-        print("change delay to", delay)
-        self.delay_mutex.lock()
-        self.delay = delay
-        self.delay_mutex.unlock()
+    def changeMotorDelay(self, motor_delay):
+        print("change motor_delay to", motor_delay)
+        self.motor_delay_mutex.lock()
+        self.motor_delay = motor_delay
+        self.motor_delay_mutex.unlock()
 
     def testPumper(self):
         self.stopTest = False
         while self.stopTest == False:
             print("pancake pump testing...")
-            self.speed_mutex.lock()
+            self.pumper_speed_mutex.lock()
             pumper_speed = self.pumper_speed
-            self.speed_mutex.unlock()
+            self.pumper_speed_mutex.unlock()
 
             print("current speed:", pumper_speed)
             time.sleep(1)
@@ -45,9 +45,9 @@ class PancakeMachine(object):
         self.stopTest = True
 
     def changePumperSpeed(self, speed):
-        self.speed_mutex.lock()
+        self.pumper_speed_mutex.lock()
         self.pumper_speed = speed
-        self.speed_mutex.unlock()
+        self.pumper_speed_mutex.unlock()
 
     def print_cake(self):
         cnt = 5
@@ -55,11 +55,11 @@ class PancakeMachine(object):
             if self.stopped:
                 return False
             print("pancake printing...")
-            self.delay_mutex.lock()
-            cur_delay = self.delay
-            self.delay_mutex.unlock()
+            self.motor_delay_mutex.lock()
+            cur_motor_delay = self.motor_delay
+            self.motor_delay_mutex.unlock()
 
-            print("current delay:", cur_delay)
+            print("current motor_delay:", cur_motor_delay)
             time.sleep(1)
             cnt -= 1
         return True
