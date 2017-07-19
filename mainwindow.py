@@ -70,7 +70,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
         self.checkFileName(self.filename)
 
-        self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.motor_delay, self.pumper_pin, self.pumper_speed)
+        self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.motor_delay, self.pumper_pin, self.pumper_speed, 0.5)
         self.pancake_printer = PancakePrintThread(self.filename, self.pancake_machine)
         self.pancake_test = PumperTestThread(self.pancake_machine)
 
