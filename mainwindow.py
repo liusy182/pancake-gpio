@@ -145,6 +145,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
     def onPancakePrinted(self):
         print("Finished")
+        self.pancake_machine.stopTestPumper()
         self.resetStartEndButton()
 
     def pressedPumperTestButton(self):
