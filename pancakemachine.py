@@ -77,6 +77,8 @@ class PancakeMachine(object):
 
     def print_cake(self, cmds):
         print("Pancake printing...")
+        pumper_speed = self.pumper_speed
+        
         for cmd in cmds:
             if self.stopped:
                 print("Pancake stopping...")
@@ -104,9 +106,11 @@ class PancakeMachine(object):
                 continue
             elif cmd.startswith('M106'):
                 # Pump on
+                self.changePumperSpeed(pumper_speed)
                 continue
             elif cmd.startswith('M107'):
                 # Pump off
+                self.changePumperSpeed(0)
                 continue
         return True
 

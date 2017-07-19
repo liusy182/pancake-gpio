@@ -113,10 +113,14 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
             self.pancake_printer = PancakePrintThread(self.filename, self.pancake_machine)
             self.pancake_printer.pancake_printed.connect(self.onPancakePrinted)
             self.pancake_printer.start()
+
+            self.pancake_test.start()
         else:
             print("Stop!")
             self.btnStartEnd.setText(_translate("MainWindow", "Start"))
             self.pancake_machine.stop()
+
+            self.pancake_machine.stopTestPumper()
 
     def sliderSpeedReleased(self):
         delay = self.getCurrentMotorDelayFromSlider()
