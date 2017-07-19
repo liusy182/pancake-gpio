@@ -28,6 +28,7 @@ def setup():
     GPIO.setwarnings(False)
     GPIO.setup(list(PINS_X.values()), GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(list(PINS_Y.values()), GPIO.OUT, initial=GPIO.HIGH)
+    GPIO.setup(PIN_PUMPER, GPIO.OUT, initial=GPIO.LOW)
     
 def cleanup():
     GPIO.cleanup()
