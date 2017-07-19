@@ -17,7 +17,7 @@ PINS_Y = {
     'DIR': 16
 }
 
-PIN_PUMPER1 = 13
+PIN_PUMPER1 = 19
 PIN_PUMPER2 = 14
 
 def setup():
