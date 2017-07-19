@@ -13,10 +13,10 @@ class Pumper(object):
         self.cycle_time = cycle_time
 
     def run_one_cycle(self, on_time):
-        print("on")
+        #print("on")
         GPIO.output(self.pin1, GPIO.HIGH)
         time.sleep(on_time)
-        #GPIO.output(self.pin1, GPIO.LOW)
+        GPIO.output(self.pin1, GPIO.LOW)
         time.sleep(self.cycle_time - on_time)
 
     def reset(self):
