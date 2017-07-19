@@ -9,13 +9,13 @@ class StepperMotor(object):
     def __init__(self, pins):
         self.pins = pins
         self.pos = 0
-        self.steps = 40
+        self.steps = 4
 
     def move_one_cycle(self, dir, delay):
         if dir == 1:
-            self.forward(0.0005)
+            self.forward(0.001)
         else:
-            self.backward(0.0005)
+            self.backward(0.001)
 
     def forward(self, delay):
         """
