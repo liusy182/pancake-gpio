@@ -78,12 +78,13 @@ class PancakeMachine(object):
     def print_cake(self, cmds):
         print("Pancake printing...")
         pumper_speed = self.pumper_speed
-        
+
         for cmd in cmds:
             if self.stopped:
                 print("Pancake stopping...")
                 return False
             
+            print(cmd)
             if cmd.startswith('G00'):
                 m = re.search('G00\sX(\S+)\sY(\S+)', cmd)
                 if not m:
