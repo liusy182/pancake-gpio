@@ -17,7 +17,8 @@ PINS_Y = {
     'DIR': 16
 }
 
-PIN_PUMPER = 13
+PIN_PUMPER1 = 13
+PIN_PUMPER2 = 14
 
 def setup():
     """
@@ -28,7 +29,8 @@ def setup():
     GPIO.setwarnings(False)
     GPIO.setup(list(PINS_X.values()), GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(list(PINS_Y.values()), GPIO.OUT, initial=GPIO.HIGH)
-    GPIO.setup(PIN_PUMPER, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(PIN_PUMPER1, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(PIN_PUMPER2, GPIO.OUT, initial=GPIO.LOW)
     
 def cleanup():
     GPIO.cleanup()
@@ -37,7 +39,7 @@ def cleanup():
 def main():
     setup()
     app = QApplication(sys.argv)
-    form = MainWindow(PINS_X, PINS_Y, PIN_PUMPER)
+    form = MainWindow(PINS_X, PINS_Y, PIN_PUMPER1, PIN_PUMPER2)
     form.show()
     sys.exit(app.exec_())
     cleanup()

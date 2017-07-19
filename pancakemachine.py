@@ -12,13 +12,13 @@ from pancake.pumper import Pumper
 
 class PancakeMachine(object):
 
-    def __init__(self, pinsx, pinsy, motor_delay, pumper_pin, pumper_speed, cycle_time):
+    def __init__(self, pinsx, pinsy, motor_delay, pumper_pin1, pumper_pin2, pumper_speed, cycle_time):
         self.motorX = StepperMotor(pinsx)
         self.motorY = StepperMotor(pinsy)
         self.motor_delay = motor_delay
         self.motor_delay_mutex = QtCore.QMutex()
 
-        self.pumper = Pumper(pumper_pin, cycle_time)
+        self.pumper = Pumper(pumper_pin1, pumper_pin2, cycle_time)
         self.pumper_speed = pumper_speed
         self.pumper_speed_mutex = QtCore.QMutex()
 
