@@ -1,9 +1,8 @@
 from __future__ import absolute_import
 
-import time
-
 # from threading import Thread, Event
 import RPi.GPIO as GPIO
+import time
 
 
 class StepperMotor(object):
@@ -41,3 +40,7 @@ class StepperMotor(object):
             GPIO.output(self.pins['IN'], 1)
             time.sleep(delay)
             GPIO.output(self.pins['IN'], 0)
+
+    def forwardX_200(self):
+        GPIO.output(self.pins['DIR'], 0)
+        GPIO.output(self.pins['IN'], 1)

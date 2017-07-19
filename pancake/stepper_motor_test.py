@@ -31,6 +31,7 @@ def setup():
 if __name__ == "__main__":
     setup()
     # print("x forwaring 200")
+    motorX.forwardX_200()
     for i in range(200):
         motorY.forward(0.005)
     for i in range (200):
