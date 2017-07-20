@@ -32,7 +32,7 @@ G4 P350 ;Pause for 350 milliseconds
 G00 X20 Y0
 G00 X50 Y0
 G00 X200 Y0
-G00 X200 Y20
+G00 X260 Y20
 G00 X200 Y100
 G00 X200 Y120
 ;Nearing path end, moving to preshutoff position
