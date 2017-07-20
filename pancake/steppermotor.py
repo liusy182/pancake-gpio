@@ -14,7 +14,7 @@ class StepperMotor(object):
         self.steps = 6
         self.pin_enable = pin_enable
 
-    def move_one_cycle(self, enx, eny, dirx, diry, delay=0.001):
+    def move_one_cycle(self, enx, eny, dirx, diry, delay=0.002):
         GPIO.output(self.pinsx['DIR'], 1 if dirx == 1 else 0)
         GPIO.output(self.pinsy['DIR'], 1 if diry == 1 else 0)
 
@@ -24,7 +24,7 @@ class StepperMotor(object):
             time.sleep(delay)
             GPIO.output(self.pinsx['IN'], 0)
             GPIO.output(self.pinsy['IN'], 0)
-            time.sleep(0.001)
+            time.sleep(delay)
 
 
             # def forward(self, delay):

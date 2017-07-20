@@ -42,7 +42,6 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
         self.pumper_pin1 = pumper_pin1
         self.pumper_pin2 = pumper_pin2
-        #self.pumper_speed = 0.25
 
         super(self.__class__, self).__init__()
         self.setupUi(self) # gets defined in the UI file
@@ -66,7 +65,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
         self.sliderPumper.setMinimum(1)  # 0.05
         self.sliderPumper.setMaximum(10) # 0.5
         self.sliderPumper.setSingleStep(1)
-        self.sliderPumper.setValue(5)    # 0.25
+        self.sliderPumper.setValue(10)    # 0.25
 
         self.pumper_speed = self.getCurrentPumperSpeedFromSlider()
 
