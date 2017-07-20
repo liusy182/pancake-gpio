@@ -32,7 +32,7 @@ def setup():
     GPIO.setup(list(PINS_X.values()), GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(list(PINS_Y.values()), GPIO.OUT, initial=GPIO.HIGH)
     GPIO.setup(PIN_PUMPER1, GPIO.OUT, initial=GPIO.LOW)
-    #GPIO.setup(PIN_PUMPER2, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(PIN_ENABLE_MOTOR, GPIO.OUT, initial=GPIO.HIGH)
     
 def cleanup():
     GPIO.cleanup()
