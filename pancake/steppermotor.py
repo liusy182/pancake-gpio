@@ -52,4 +52,5 @@ class StepperMotor(object):
             #         GPIO.output(self.pins['IN'], 0)
 
     def enable_motors(enable):
-        GPIO.output(self.pin_enable, 0 if enable == 1 else 1)
+        print(self.pin_enable, enable)
+        GPIO.output(self.pin_enable, GPIO.LOW if enable == 1 else GPIO.HIGH)
