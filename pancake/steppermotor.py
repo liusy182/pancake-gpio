@@ -13,7 +13,7 @@ class StepperMotor(object):
         self.pinsy = pinsy
         self.steps = 4
 
-    def move_one_cycle(self, enx, eny, dirx, diry, delay):
+    def move_one_cycle(self, enx, eny, dirx, diry, 0.005):
         GPIO.output(self.pinsx['DIR'], 1 if dirx == 1 else 0)
         GPIO.output(self.pinsy['DIR'], 1 if diry == 1 else 0)
 
