@@ -33,11 +33,12 @@ class PumperTestThread(QtCore.QThread):
 
 class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
-    def __init__(self, pinsx, pinsy, pumper_pin1, pumper_pin2):
+    def __init__(self, pinsx, pinsy, pumper_pin1, pumper_pin2, motor_pin_enable):
         self.filename = ""
         #self.delay = 0.002
         self.pinsx = pinsx
         self.pinsy = pinsy
+        self.motor_pin_enable = motor_pin_enable
 
         self.pumper_pin1 = pumper_pin1
         self.pumper_pin2 = pumper_pin2
@@ -71,7 +72,7 @@ class MainWindow(QMainWindow, ui_mainwindow.Ui_MainWindow):
 
         self.checkFileName(self.filename)
 
-        self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.motor_delay, self.pumper_pin1, self.pumper_pin2, self.pumper_speed, 0.5)
+        self.pancake_machine = PancakeMachine(self.pinsx, self.pinsy, self.motor_delay, self.pumper_pin1, self.pumper_pin2, self.pumper_speed, 0.5, self.motor_pin_enable)
         self.pancake_printer = PancakePrintThread(self.filename, self.pancake_machine)
         self.pancake_test = PumperTestThread(self.pancake_machine)
 

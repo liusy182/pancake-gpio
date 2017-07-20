@@ -9,8 +9,8 @@ from pancake.steppermotor import StepperMotor
 
 
 class PancakeMachine(object):
-    def __init__(self, pinsx, pinsy, motor_delay, pumper_pin1, pumper_pin2, pumper_speed, cycle_time):
-        self.motor = StepperMotor(pinsx, pinsy)
+    def __init__(self, pinsx, pinsy, motor_delay, pumper_pin1, pumper_pin2, pumper_speed, cycle_time, motor_pin_enable):
+        self.motor = StepperMotor(pinsx, pinsy, motor_pin_enable)
         self.motor_delay = motor_delay
         self.motor_delay_mutex = QtCore.QMutex()
 
@@ -72,11 +72,13 @@ class PancakeMachine(object):
 
     def print_cake(self, cmds):
         print("Pancake printing...")
+        self.motor.enable_motors(1)
         pumper_speed = self.pumper_speed
 
         for cmd in cmds:
             if self.stopped:
                 print("Pancake stopping...")
+                self.motor.enable_motors(0)
                 return False
 
             print(cmd)
@@ -109,6 +111,7 @@ class PancakeMachine(object):
                 # Pump off
                 self.changePumperSpeed(0)
                 continue
+        self.motor.enable_motors(1)
         return True
 
     def move_line(self, newx, newy):

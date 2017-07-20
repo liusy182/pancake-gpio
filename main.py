@@ -20,6 +20,8 @@ PINS_Y = {
 PIN_PUMPER1 = 19
 PIN_PUMPER2 = 14
 
+PIN_ENABLE_MOTOR = 10
+
 def setup():
     """
     Setup function to initialize GPIO Board
@@ -39,7 +41,7 @@ def cleanup():
 def main():
     setup()
     app = QApplication(sys.argv)
-    form = MainWindow(PINS_X, PINS_Y, PIN_PUMPER1, PIN_PUMPER2)
+    form = MainWindow(PINS_X, PINS_Y, PIN_PUMPER1, PIN_PUMPER2, PIN_ENABLE_MOTOR)
     form.show()
     sys.exit(app.exec_())
     cleanup()
