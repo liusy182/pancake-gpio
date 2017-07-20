@@ -96,7 +96,7 @@ class PancakeMachine(object):
                 continue
             elif cmd.startswith('G4'):
                 # Pause for certain milli secs
-                m = re.search('G00\sP(\S+)', cmd)
+                m = re.search('G4\sP(\S+)', cmd)
                 if not m:
                     continue
                 print("Sleep time " + m.group(1))
