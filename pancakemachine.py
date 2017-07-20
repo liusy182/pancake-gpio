@@ -4,17 +4,13 @@ import re
 import time
 from PyQt5 import QtCore
 
-import RPi.GPIO as GPIO
-
-from pancake.steppermotor import StepperMotor
 from pancake.pumper import Pumper
+from pancake.steppermotor import StepperMotor
 
 
 class PancakeMachine(object):
-
     def __init__(self, pinsx, pinsy, motor_delay, pumper_pin1, pumper_pin2, pumper_speed, cycle_time):
-        self.motorX = StepperMotor(pinsx)
-        self.motorY = StepperMotor(pinsy)
+        self.motor = StepperMotor(pinsx, pinsy)
         self.motor_delay = motor_delay
         self.motor_delay_mutex = QtCore.QMutex()
 
@@ -74,7 +70,6 @@ class PancakeMachine(object):
             lines = f.readlines()
         return lines
 
-
     def print_cake(self, cmds):
         print("Pancake printing...")
         pumper_speed = self.pumper_speed
@@ -83,7 +78,7 @@ class PancakeMachine(object):
             if self.stopped:
                 print("Pancake stopping...")
                 return False
-            
+
             print(cmd)
             if cmd.startswith('G00'):
                 m = re.search('G00\sX(\S+)\sY(\S+)', cmd)
@@ -91,6 +86,7 @@ class PancakeMachine(object):
                     continue
                 x = m.group(1)
                 y = m.group(2)
+                # Change to round
                 self.move_line(int(float(x)), int(float(y)))
             elif cmd.startswith('G28'):
                 # Resets X, Y
@@ -115,7 +111,6 @@ class PancakeMachine(object):
                 continue
         return True
 
-
     def move_line(self, newx, newy):
         """
         Function to move two motors in line
@@ -123,8 +118,8 @@ class PancakeMachine(object):
         :param newy: 
         :return: 
         """
-        dx = newx - self.motorX.pos
-        dy = newy - self.motorY.pos
+        dx = newx - self.motor.posx
+        dy = newy - self.motor.posy
         dirX = 1 if dx > 0 else -1
         dirY = 1 if dy > 0 else -1
         dx = abs(dx)
@@ -136,25 +131,26 @@ class PancakeMachine(object):
 
         if dx > dy:
             print("Motor X Moving ", dirX)
-            over = dx/2
+            over = dx / 2
             for i in range(0, dx):
                 # Todo: conversion between int to steps
-                self.motorX.move_one_cycle(dirX, cur_motor_delay)
                 over += dy
                 if over >= dx:
                     over -= dx
-                    self.motorY.move_one_cycle(dirY, cur_motor_delay)
+                    self.motor.move_one_cycle(1, 1, dirX, dirY, cur_motor_delay)
+                else:
+                    self.motor.move_one_cycle(1, 0, dirX, dirY, cur_motor_delay)
+
         else:
             print("Motor Y Moving ", dirY)
-            over = dy/2
+            over = dy / 2
             for i in range(0, dy):
-                self.motorX.move_one_cycle(dirX, cur_motor_delay)
                 over += dx
                 if over >= dy:
                     over -= dy
-                    self.motorY.move_one_cycle(dirY, cur_motor_delay)
-        
-        self.motorX.pos = newx
-        self.motorY.pos = newy
+                    self.motor.move_one_cycle(1, 1, dirX, dirY, cur_motor_delay)
+                else:
+                    self.motor.move_one_cycle(0, 1, dirX, dirY, cur_motor_delay)
 
-
+        self.motor.posx = newx
+        self.motor.posy = newy
