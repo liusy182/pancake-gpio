@@ -27,7 +27,6 @@ G00 X1 Y1 ;Help homing
 G28 X0 Y0 ;Home All Axis
 ;PancakePainter header complete
 ;Starting stroke path #1/1, segments: 53, length: 2683, color #1
-G00 X168.172 Y52.214
 M106 ;Pump on
 G4 P350 ;Pause for 350 milliseconds
 G00 X20 Y0
