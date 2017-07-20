@@ -99,8 +99,8 @@ class PancakeMachine(object):
                 m = re.search('G4\sP(\S+)', cmd)
                 if not m:
                     continue
-                print("Sleep time " + str(m.group(1)))
-                time.sleep(m.group(1) / 1000)
+                print("Sleep time " + m.group(1))
+                time.sleep(round(float(m.group(1))) / 1000)
             elif cmd.startswith('M84'):
                 # Motors Off
                 continue
