@@ -111,7 +111,7 @@ class PancakeMachine(object):
                 # Pump off
                 self.changePumperSpeed(0)
                 continue
-        self.motor.enable_motors(1)
+        self.motor.enable_motors(0)
         return True
 
     def move_line(self, newx, newy):
