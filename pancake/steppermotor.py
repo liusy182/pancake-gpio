@@ -22,7 +22,7 @@ class StepperMotor(object):
             GPIO.output(self.pinsy['IN'], 1 if eny == 1 else 0)
             time.sleep(delay)
             GPIO.output(self.pinsx['IN'], 0)
-            GPIO.output(self.pinsx['IN'], 0)
+            GPIO.output(self.pinsy['IN'], 0)
             time.sleep(0.01 - delay)
 
 
