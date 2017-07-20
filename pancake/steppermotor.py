@@ -11,7 +11,7 @@ class StepperMotor(object):
         self.posy = 0
         self.pinsx = pinsx
         self.pinsy = pinsy
-        self.steps = 4
+        self.steps = 6
         self.pin_enable = pin_enable
 
     def move_one_cycle(self, enx, eny, dirx, diry, delay=0.001):
