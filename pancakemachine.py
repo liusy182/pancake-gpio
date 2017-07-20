@@ -3,7 +3,7 @@ from __future__ import absolute_import
 import re
 import time
 from PyQt5 import QtCore
-
+from decimal import *
 from pancake.pumper import Pumper
 from pancake.steppermotor import StepperMotor
 
@@ -89,7 +89,7 @@ class PancakeMachine(object):
                 x = m.group(1)
                 y = m.group(2)
                 # Change to round
-                self.move_line(int(float(x)), int(float(y)))
+                self.move_line(round(float(x)), round(float(y)))
             elif cmd.startswith('G28'):
                 # Resets X, Y
                 # self.move_line(0, 0)
